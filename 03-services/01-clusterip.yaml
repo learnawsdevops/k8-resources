@@ -36,9 +36,6 @@ From the EC2 host terminal (even if on the same VPC), it's not able to hit the C
 
 ✅ How to test it correctly:
 Option 1: curl from inside a pod
-bash
-Copy
-Edit
 kubectl exec -it demo-env -- curl 10.100.43.175
 This should work, as you're curling from inside the cluster.
 
