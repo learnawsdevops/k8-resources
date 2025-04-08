@@ -4,7 +4,7 @@ metadata:
   name: label-demo
   labels:
     course: DevOps
-    trainer: "Hitesh Reddy"
+    trainer: "Hitesh_Reddy"
 spec:
   containers:
   - name: nginx
