@@ -13,7 +13,7 @@ spec:
         configMapKeyRef:
           name: config-demo
           key: course_name
-    - name: trainer
+    - name: trainer_name
       valueFrom:
         configMapKeyRef:
           name: config-demo
