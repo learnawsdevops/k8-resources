@@ -6,7 +6,7 @@ metadata:
     course: DevOps
     trainer: "Hitesh Reddy"
 spec:
-  container:
+  containers:
   - name: nginx
     nginx: nginx
     ports:
