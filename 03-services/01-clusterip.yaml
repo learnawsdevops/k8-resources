@@ -25,3 +25,21 @@ spec:
     protocol: TCP
     port: 80
     targetPort: http-web-svc
+
+"""
+You're trying to curl the ClusterIP of your nginx-service, which works only from within the cluster, not from your EC2 host (outside the cluster). That’s why the curl command is hanging—it's not reachable externally.
+
+💡 Explanation:
+Your service nginx-service is of type ClusterIP, which is only accessible from within the Kubernetes cluster.
+
+From the EC2 host terminal (even if on the same VPC), it's not able to hit the ClusterIP directly.
+
+✅ How to test it correctly:
+Option 1: curl from inside a pod
+bash
+Copy
+Edit
+kubectl exec -it demo-env -- curl 10.100.43.175
+This should work, as you're curling from inside the cluster.
+
+"""
