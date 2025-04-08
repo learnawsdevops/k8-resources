@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-env
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+    env:
+    - name: course
+      valueFrom:
+        configMapKeyRef:
+          name: config-demo
+          key: course_name
+    - name: SPECIAL_TYPE_KEY
+      valueFrom:
+        configMapKeyRef:
+          name: config-demo
+          key: trainer
