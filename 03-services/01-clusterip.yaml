@@ -39,4 +39,8 @@ Option 1: curl from inside a pod
 kubectl exec -it demo-env -- curl 10.100.43.175
 This should work, as you're curling from inside the cluster.
 
+kubectl exec -it nginx -- curl nginx-service # we will call with service names , bcz service ip's are ephermeral
+
 """
+
+
