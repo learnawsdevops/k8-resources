@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: label-demo
+  labels:
+    course: DevOps
+    trainer: "Hitesh Reddy"
+spec:
+  container:
+  - name: nginx
+    nginx: nginx
+    ports:
+    - containerPort: 80
