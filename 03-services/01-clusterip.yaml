@@ -8,6 +8,9 @@ spec:
   containers:
   - name: nginx
     image: nginx
+    ports:
+    - containerPort: 80
+      name: http-web-svc
 
 ---
 apiVersion: v1
@@ -17,3 +20,8 @@ metadata:
 spec:
   selector:
     project: roboshop
+  ports:
+  - name: nginx
+    protocol: TCP
+    port: 80
+    targetPort: http-web-svc
