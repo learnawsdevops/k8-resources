@@ -1,31 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fluentd-config
-  namespace: kube-system
-data:
-  fluentd.conf: |
-    <source>
-      @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/fluentd-containers.log.pos
-      tag kubernetes.*
-      format json
-      read_from_head true
-    </source>
-
-    <match kubernetes.**>
-      @type cloudwatch_logs
-      log_group_name fluentd-logs
-      log_stream_name fluentd-log-stream
-      region us-west-1
-      auto_create_stream true
-      <buffer>
-        flush_interval 5s
-        flush_at_shutdown true
-      </buffer>
-    </match>
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -41,22 +13,13 @@ spec:
         app: fluentd
     spec:
       containers:
-      - name: fluentd
-        image: fluent/fluentd:v1.12-debian
-        env:
-          - name: FLUENTD_ARGS
-            value: "-v"
-        volumeMounts:
-          - name: varlog
-            mountPath: /var/log
-
-          - name: fluentd-config
-            mountPath: /fluentd/etc/fluent.conf
-            subPath: fluent.conf
+        - name: fluentd
+          image: hitesh2201/fluentd:v1.12-debian
+          volumeMounts:
+            - name: fluentd-config
+              mountPath: /fluentd/etc/fluent.conf
+              subPath: fluentd.conf  # This ensures that only the file is mounted
       volumes:
-        - name: varlog
-          hostPath:
-            path: /var/log
         - name: fluentd-config
           configMap:
-            name: fluentd-config
+            name: fluentd-config  # The name of your ConfigMap
