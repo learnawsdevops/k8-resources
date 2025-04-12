@@ -16,7 +16,7 @@ data:
           @type "none"
           unmatched_lines
         </parse>
-      </source>
+        </source>
 
 
         <match kubernetes.test.logs>
