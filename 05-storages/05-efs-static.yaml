@@ -13,7 +13,7 @@ spec:
   storageClassName: ""
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-0fea2c6cc1545b7dd  # Replace with your EFS ID
+    volumeHandle: fs-092d61bf374457ca5  # Replace with your EFS ID
 ---
 # efs-pvc.yaml
 apiVersion: v1
