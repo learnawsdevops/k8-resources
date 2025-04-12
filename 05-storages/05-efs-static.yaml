@@ -1,0 +1,69 @@
+# efs-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-static
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-0fea2c6cc1545b7dd  # Replace with your EFS ID
+---
+# efs-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-static
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""  # Important: Must match PV (empty)
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: efs-static
+  labels:
+    app: efs-static
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: efs-static
+  template:
+    metadata:
+      labels:
+        app: efs-static
+    spec:
+      containers:
+      - name: efs-static
+        image: nginx
+        volumeMounts:
+        - name: nginx-data
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-data
+        persistentVolumeClaim:
+          claimName: efs-static
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: efs-static
+spec:
+  type: LoadBalancer
+  selector:
+    app: efs-static
+  ports:
+    - port: 80           # Port exposed by the service
+      targetPort: 80     # Port your container listens on
+
