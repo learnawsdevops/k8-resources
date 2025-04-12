@@ -6,23 +6,18 @@ metadata:
 data:
   fluentd.conf: |
     <source>
-    @type tail
-    path "/var/log/cloud-init-output.log"
-    pos_file "/var/log/fluentd-test.pos"
-    tag "kubernetes.test.logs"  # Updated tag to match the match block
-    format none
-    read_from_head true
-    <parse>
-      @type none
-      unmatched_lines
-    </parse>
+      @type tail
+      path "/var/log/cloud-init-output.log"
+      pos_file "/var/log/fluentd-test.pos"
+      tag "kubernetes.test.logs"
+      read_from_head true
     </source>
 
-    <match kubernetes.**>
+    <match kubernetes.test.logs>
       @type cloudwatch_logs
-      log_group_name fluentd-logs
-      log_stream_name fluentd-log-stream
-      region us-east-1
+      log_group_name "fluentd-logs"
+      log_stream_name "fluentd-log-stream"
+      region "us-east-1"
       auto_create_stream true
       <buffer>
         flush_interval 5s
