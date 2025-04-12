@@ -16,10 +16,9 @@ data:
 
     <match kubernetes.**>
       @type cloudwatch_logs
-      log_group_name "fluentd-logs"
-      log_stream_name "fluentd-log-stream"
-      region "us-east-1"
-      auto_create_group true
+      log_group_name fluentd-logs
+      log_stream_name fluentd-log-stream
+      region us-east-1
       auto_create_stream true
       <buffer>
         flush_interval 5s
