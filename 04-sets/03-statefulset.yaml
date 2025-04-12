@@ -34,6 +34,8 @@ spec:
         volumeMounts:
         - name: www
           mountPath: /usr/share/nginx/html
+      nodeSelector:
+        zone: 1d
   volumeClaimTemplates:
   - metadata:
       name: www
