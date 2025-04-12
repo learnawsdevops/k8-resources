@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fluentd
-          image: hitesh2201/fluentd:v1.12-debian
+          image: hitesh2201/fluentd:v1.12
           volumeMounts:
             - name: fluentd-config
               mountPath: /fluentd/etc/fluent.conf
