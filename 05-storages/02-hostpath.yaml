@@ -49,8 +49,10 @@ spec:
         volumeMounts:
           - name: varlog
             mountPath: /var/log
+
           - name: fluentd-config
-            mountPath: /fluentd/etc
+            mountPath: /fluentd/etc/fluent.conf
+            subPath: fluent.conf
       volumes:
         - name: varlog
           hostPath:
