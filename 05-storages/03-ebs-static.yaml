@@ -40,3 +40,16 @@ spec:
   - name: ebs-static
     persistentVolumeClaim:
       claimName: ebs-static
+---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ebs-static
+spec:
+  type: LoadBalancer
+  selector:
+    app: ebs-static
+  ports:
+    - port: 80           # Port exposed by the service
+      targetPort: 80     # Port your container listens on
