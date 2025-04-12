@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: fluentd
-          image: hitesh2201/fluentd:v1.12
+          image: hitesh2201/fluentd:v1
           imagePullPolicy: Always
           volumeMounts:
             - name: fluentd-config
