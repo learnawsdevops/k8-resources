@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+      - type: log
+        paths:
+          - /logs/access.log
+        multiline.pattern: '^\['
+        multiline.negate: true
+        multiline.match: after
+
+    output.elasticsearch:
+      hosts: ["http://elasticsearch.default.svc.cluster.local:9200"]
+      index: "nginx-logs-%{+yyyy.MM.dd}"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-filebeat
+spec:
+  volumes:
+    - name: shared-logs
+      emptyDir: {}
+    - name: filebeat-config
+      configMap:
+        name: filebeat-config
+
+  containers:
+    - name: nginx
+      image: nginx:1.25
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /var/log/nginx
+
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          mkdir -p /var/log/nginx && \
+          nginx -g 'daemon off;' > /var/log/nginx/access.log 2>&1
+
+    - name: filebeat
+      image: docker.elastic.co/beats/filebeat:8.11.1
+      volumeMounts:
+        - name: shared-logs
+          mountPath: /logs
+        - name: filebeat-config
+          mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+      command: ["filebeat", "-e", "-strict.perms=false"]
