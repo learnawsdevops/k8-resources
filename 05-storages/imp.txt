@@ -1,0 +1,2 @@
+/var/lib/fluentd/fluentd-test.pos this should be created manaully
+ kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.41" # this is the command we will use to install ebs csi driver in kubernetes
