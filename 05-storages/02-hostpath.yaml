@@ -1,3 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: kube-system
+data:
+  fluentd.conf: |
+    <source>
+      @type tail
+      path /var/log/messages
+      pos_file /var/log/fluentd-test.pos
+      tag test.logs
+      format none
+      read_from_head true
+    </source>
+
+    <match kubernetes.**>
+      @type cloudwatch_logs
+      log_group_name "fluentd-logs"
+      log_stream_name "fluentd-log-stream"
+      region "us-east-1"
+      auto_create_group true
+      auto_create_stream true
+      <buffer>
+        flush_interval 5s
+        flush_at_shutdown true
+      </buffer>
+    </match>
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -19,8 +48,13 @@ spec:
           volumeMounts:
             - name: fluentd-config
               mountPath: /fluentd/etc/fluent.conf
-              subPath: fluentd.conf  # This ensures that only the file is mounted
+              subPath: fluentd.conf
+            - name: varlog
+              mountPath: /var/log
       volumes:
         - name: fluentd-config
           configMap:
-            name: fluentd-config  # The name of your ConfigMap
+            name: fluentd-config
+        - name: varlog
+          hostPath:
+            path: /var/log
