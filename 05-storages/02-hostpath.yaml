@@ -6,12 +6,16 @@ metadata:
 data:
   fluentd.conf: |
     <source>
-      @type tail
-      path /var/log/cloud-init-output.log
-      pos_file /var/log/fluentd-test.pos
-      tag test.logs
-      format none
-      read_from_head true
+    @type tail
+    path "/var/log/cloud-init-output.log"
+    pos_file "/var/log/fluentd-test.pos"
+    tag "kubernetes.test.logs"  # Updated tag to match the match block
+    format none
+    read_from_head true
+    <parse>
+      @type none
+      unmatched_lines
+    </parse>
     </source>
 
     <match kubernetes.**>
