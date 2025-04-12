@@ -1,0 +1,51 @@
+# efs-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-dynamic
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: efs-dynamic
+  labels:
+    app: efs-dynamic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: efs-dynamic
+  template:
+    metadata:
+      labels:
+        app: efs-dynamic
+    spec:
+      containers:
+      - name: efs-dynamic
+        image: nginx
+        volumeMounts:
+        - name: nginx-data
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-data
+        persistentVolumeClaim:
+          claimName: efs-dynamic
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: efs-dynamic
+spec:
+  type: LoadBalancer
+  selector:
+    app: efs-dynamic
+  ports:
+    - port: 80           # Port exposed by the service
+      targetPort: 80     # Port your container listens on
