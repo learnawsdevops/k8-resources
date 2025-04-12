@@ -15,6 +15,7 @@ spec:
       containers:
         - name: fluentd
           image: hitesh2201/fluentd:v1.12
+          imagePullPolicy: Always
           volumeMounts:
             - name: fluentd-config
               mountPath: /fluentd/etc/fluent.conf
