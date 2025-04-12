@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: fluentd
-        image: fluent/fluentd-kubernetes-daemonset:v1.12-debian-cloudwatch
+        image: fluent/fluentd:v1.12-debian
         env:
           - name: FLUENTD_ARGS
             value: "-v"
