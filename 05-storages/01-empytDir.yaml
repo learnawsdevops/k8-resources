@@ -15,6 +15,8 @@ data:
     output.elasticsearch:
       hosts: ["http://elasticsearch.default.svc.cluster.local:9200"]
       index: "nginx-logs-%{+yyyy.MM.dd}"
+    setup.template.name: "nginx-logs"
+    setup.template.pattern: "nginx-logs-*"
 ---
 apiVersion: v1
 kind: Pod
