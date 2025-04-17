@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: with-node-affinity
+  name: with-node-affinity-1
 spec:
   affinity:
     nodeAffinity:
